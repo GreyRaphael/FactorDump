@@ -50,7 +50,8 @@ sh_list = read_file("config/sh_list.json", compress=False)
 sz_list = read_file("config/sz_list.json", compress=False)
 stock_list_sh = sh_list
 stock_list = sh_list + sz_list
-print("Finish reading sh_list & sz_list")
+print(f"Finish reading sh_list, length = {len(sh_list)}")
+print(f"Finish reading sz_list, length = {len(sz_list)}")
 
 # Feature Managers
 FMS = {}
@@ -265,7 +266,7 @@ all_jsons = {}
 for cq_symbol in FMS:
     all_jsons[cq_symbol] = FMS[cq_symbol].to_json()
 
-OUTPUT_DIR=f'output/{DATE_STR}'
+OUTPUT_DIR = f"output/{DATE_STR}"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 write_file(all_jsons, f"{OUTPUT_DIR}/LastState.json", compress=False)
 write_file(all_jsons, f"{OUTPUT_DIR}/LastState.json.gz", compress=True)
