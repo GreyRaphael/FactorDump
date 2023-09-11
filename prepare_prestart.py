@@ -3,6 +3,15 @@ import pandas as pd
 import gzip
 import json
 import os
+import sys
+import time
+import platform
+
+if platform.system() == "Windows":
+    sys.path.append("./libs/win")
+elif platform.system() == "Linux":
+    sys.path.append("./libs/linux")
+
 from pycqlib import quote, trade
 from pycqlib.base import Exchange
 from pycqlib.quote.feature.factors import SbqHftFeatureManager
@@ -12,6 +21,8 @@ with open("config/aiquant.json", "r") as file:
     aiquant_config = json.load(file)
     DataSource.init(aiquant_config["url"], aiquant_config["token"])
 
+start_time = time.time()
+print(f'Starts at {time.strftime("%Y-%m-%d %H:%M:%S")}')
 # get last trade date
 now_stamp = pd.Timestamp.now()
 timestamp1 = now_stamp.replace(hour=15, minute=0, second=0, microsecond=0)
@@ -270,3 +281,7 @@ OUTPUT_DIR = f"output/{DATE_STR}"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 write_file(all_jsons, f"{OUTPUT_DIR}/LastState.json", compress=False)
 write_file(all_jsons, f"{OUTPUT_DIR}/LastState.json.gz", compress=True)
+
+end_time = time.time()
+print(f'Ends at {time.strftime("%Y-%m-%d %H:%M:%S")}')
+print(f"Program costs {end_time-start_time:.2f} seconds")
